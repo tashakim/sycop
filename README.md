@@ -70,7 +70,9 @@ Outputs:
 * `runs/<run_id>/aggregates.json` — metric means + bootstrap CIs + tests
 * `report/assets/table1.md` and `report/assets/fig_*.png` — ready for the report
 
-### Experimental design (ablation conditions)
+---
+
+## Experimental design (ablation conditions)
 
 We replay identical multi-turn trajectories under:
 
@@ -106,4 +108,4 @@ Automated labeling (including LLM-based judgments) is a proxy; we recommend manu
 
 ## License
 
-MIT (recommended for hackathon open-source submissions)
+MIT License
