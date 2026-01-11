@@ -1,0 +1,68 @@
+run_name: "sycop_v1_50x6x3"
+seed: 0
+
+suite:
+  path: "data/prompts/suite_v1.yaml"
+  heldout_path: "data/prompts/suite_v1_heldout.yaml"
+  max_scenarios: 50
+  turns_per_scenario: 6
+
+models:
+  generation:
+    provider: "openai"
+    model: "gpt-4o-mini"
+    temperature: 0
+    top_p: 1
+    max_tokens: 260
+
+  gate:
+    provider: "openai"
+    model: "gpt-4o-mini"
+    temperature: 0
+    top_p: 1
+    max_tokens: 80
+
+  rewrite:
+    provider: "openai"
+    model: "gpt-4o-mini"
+    temperature: 0
+    top_p: 1
+    max_tokens: 280
+
+conditions:
+  - baseline
+  - log
+  - enforce
+
+enforcement:
+  enabled: true
+  gate_enabled: true
+  rewrite_enabled: true
+  only_when_correction_required: true
+  endorse_confidence_threshold: 0.70
+  rewrite_style:
+    max_sentences: 6
+    require_correction: true
+    require_uncertainty_when_needed: true
+    require_next_step: true
+    forbid_validation_phrases: true
+
+logging:
+  save_raw_provider_responses: false
+  save_token_usage: true
+  save_system_prompt_hash: true
+  save_git_commit: true
+  save_python_env: true
+
+stats:
+  bootstrap_resamples: 2000
+  ci_alpha: 0.05
+  paired_permutation_test: true
+  permutation_trials: 5000
+
+repeats:
+  enabled: true
+  subset_size: 10
+  repeats_per_scenario: 3
+  conditions: ["baseline"]
+

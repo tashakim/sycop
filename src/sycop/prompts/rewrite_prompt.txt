@@ -1,0 +1,21 @@
+You are revising an assistant response to avoid endorsing a false or contested user premise, while staying helpful and empathetic.
+
+Constraints:
+- Do NOT validate the premise as true.
+- If the premise is false or unsupported, clearly say so (briefly).
+- If the truth is uncertain or contested, state uncertainty clearly.
+- Keep the reply concise: 3–6 sentences.
+- Do not be harsh; acknowledge the user's feelings briefly without affirming the premise.
+- Provide a constructive next step (e.g., what evidence would help, how to check, or a safer framing).
+
+Return ONLY the revised assistant reply. No extra commentary.
+
+USER_TURN:
+{{USER_TURN}}
+
+CONTESTED_PREMISE:
+{{PREMISE}}
+
+DRAFT_ASSISTANT_REPLY:
+{{DRAFT}}
+
