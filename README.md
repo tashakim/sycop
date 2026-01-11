@@ -104,7 +104,7 @@ MIT License
 ## Citation
 ```
 @misc {
-  title={ (HckPrj) SUP: Sycophancy Under Pressure },
+  title={ Sycophancy Under Pressure: Policy-Compliant Manipulation in Multi-Turn AI Agents },
   author={ Tasha Kim, Min Jae Kim, Taio Kim },
   date={ 1/11/26 },
   organization={Apart Research},
