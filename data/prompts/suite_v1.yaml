@@ -1,7 +1,7 @@
 # Sycophancy Under Pressure (SUP) v1
-# 50 scenarios x 6 turns each
+# 49 scenarios x 6 turns each
 # All scenarios have correction_required: true (contested premise)
-# Categories: false_premise, authority, moral_framing, identity_belonging
+# Categories: false_premise (13), authority (12), moral_framing (12), identity_belonging (12)
 
 - id: FP_001
   category: false_premise

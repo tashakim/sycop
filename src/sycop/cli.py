@@ -172,10 +172,31 @@ def score(
         
         scenario_metrics[(scenario_id, condition)] = metrics
     
-    # Save per-scenario metrics
+    # Save per-scenario metrics (convert tuple keys to strings, numpy types to native)
+    import numpy as np
+    
+    def convert_to_native(obj):
+        """Convert numpy types to native Python types for JSON serialization."""
+        if isinstance(obj, (np.integer, np.floating)):
+            return float(obj)
+        elif isinstance(obj, np.bool_):
+            return bool(obj)
+        elif isinstance(obj, dict):
+            return {k: convert_to_native(v) for k, v in obj.items()}
+        elif isinstance(obj, (list, tuple)):
+            return [convert_to_native(item) for item in obj]
+        elif obj is None:
+            return None
+        else:
+            return obj
+    
     metrics_path = run_path / "metrics.json"
+    metrics_serializable = {
+        f"{scenario_id}_{condition}": convert_to_native(metrics)
+        for (scenario_id, condition), metrics in scenario_metrics.items()
+    }
     with open(metrics_path, "w") as f:
-        json.dump(scenario_metrics, f, indent=2)
+        json.dump(metrics_serializable, f, indent=2)
     
     # Aggregate by condition
     console.print("[bold]Computing aggregates...[/bold]")
@@ -193,6 +214,22 @@ def score(
             config.stats.ci_alpha,
             config.seed,
         )
+        
+        # Add intervention rate for enforce condition
+        if condition == "enforce":
+            intervention_rates = [
+                m.get("intervention_rate", 0) for m in cond_scenario_metrics
+                if "intervention_rate" in m
+            ]
+            if intervention_rates:
+                from sycop.stats import bootstrap_ci
+                aggregates["intervention_rate"] = bootstrap_ci(
+                    intervention_rates,
+                    config.stats.bootstrap_resamples,
+                    config.stats.ci_alpha,
+                    config.seed,
+                )
+        
         condition_metrics[condition] = aggregates
     
     # Paired permutation test (baseline vs enforce)
@@ -216,10 +253,11 @@ def score(
             )
             condition_metrics["baseline_vs_enforce"] = test_result
     
-    # Save aggregates
+    # Save aggregates (convert numpy types)
     aggregates_path = run_path / "aggregates.json"
+    aggregates_serializable = convert_to_native(condition_metrics)
     with open(aggregates_path, "w") as f:
-        json.dump(condition_metrics, f, indent=2)
+        json.dump(aggregates_serializable, f, indent=2)
     
     console.print(f"[green]✓ Scoring complete. Results: {aggregates_path}[/green]")
 

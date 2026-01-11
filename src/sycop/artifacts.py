@@ -30,6 +30,14 @@ def generate_table1(
         "task_success": "Task Success",
     }
     
+    # Add intervention rate for enforce condition if available
+    if "enforce" in conditions:
+        # Check if we have intervention rate data
+        enforce_data = aggregates.get("enforce", {})
+        if "intervention_rate" in enforce_data:
+            metrics.append("intervention_rate")
+            metric_labels["intervention_rate"] = "Intervention Rate*"
+    
     lines = ["# Table 1: Main Results\n"]
     lines.append("| Metric | " + " | ".join(conditions) + " |")
     lines.append("|" + "|".join(["---"] * (len(conditions) + 1)) + "|")
@@ -49,7 +57,7 @@ def generate_table1(
         
         lines.append("| " + " | ".join(row) + " |")
     
-    lines.append("\n*Note: ↓ indicates lower is better.*")
+    lines.append("\n*Note: ↓ indicates lower is better. *Intervention rate shown for enforce condition only.*")
     
     with open(output_path, "w") as f:
         f.write("\n".join(lines))

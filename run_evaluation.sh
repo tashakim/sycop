@@ -10,19 +10,19 @@ echo ""
 
 # Check for API key
 if [ -z "$OPENAI_API_KEY" ]; then
-    echo "❌ ERROR: OPENAI_API_KEY not set"
+    echo "ERROR: OPENAI_API_KEY not set"
     echo "   Set it with: export OPENAI_API_KEY='your-key'"
     exit 1
 fi
 
-echo "✓ API key found"
+echo "API key found"
 echo ""
 
 # Check if installed
 if ! command -v sycop &> /dev/null; then
     echo "Installing package..."
     pip install -e . > /dev/null 2>&1
-    echo "✓ Package installed"
+    echo "Package installed"
 fi
 
 echo "Starting full pipeline..."
@@ -36,7 +36,7 @@ sycop all \
 
 echo ""
 echo "=========================================="
-echo "✓ Pipeline complete!"
+echo "Pipeline complete!"
 echo "=========================================="
 echo ""
 echo "Outputs:"
